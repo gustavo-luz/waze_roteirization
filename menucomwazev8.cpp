@@ -1,13 +1,14 @@
-// ------C”DIGO PARA C¡LCULO DE ROTA OTIMIZADA DE CAMINH’ES QUE REALIZAM A COLETA SELETIVA ----------------------
-// --------12/2020 - PROJETO COMPUTACIONAL - COMPUTA«√O PARA ENGENHARIA ------------------------------------
-// -----------UNIVERSIDADE DE BRASÕLIA - ENGENHARIA EL…TRICA --------------------------------------------------
-// ---------------- GUSTAVO PESSOA, IVAN XXX --------------------------------------------------
+/ ------C√ìDIGO PARA C√ÅLCULO DE ROTA OTIMIZADA DE CAMINH√ïES QUE REALIZAM A COLETA SELETIVA ----------------------
+// --------12/2020 - PROJETO COMPUTACIONAL - COMPUTA√á√ÉO PARA ENGENHARIA ------------------------------------
+// -----------UNIVERSIDADE DE BRAS√çLIA - ENGENHARIA EL√âTRICA --------------------------------------------------
+// ---------------- GUSTAVO PESSOA, IVAN CUNHA --------------------------------------------------
 
 // ---------------------------------------------- BIBLIOTECAS ----------------------
 
 #include <iostream>
 #include <vector>
 // tirar elemento de vetor
+#include <algorithm>
 #include<bits/stdc++.h>
 #include <string>
 //converter double em string
@@ -19,17 +20,17 @@
 #include <fstream>
 //para o calculo da distancia entre os pontos
 #include <cmath> 
-//precis„o casas decimais
+//precis√£o casas decimais
 #include <iomanip>
 using namespace std;
 
 
 
-// ---------------------------------------------- FUN«’ES ----------------------
+// ---------------------------------------------- FUN√á√ïES ----------------------
 
 
 
-// funÁ„o de calculo de quantos km tem entre duas latitudes e longitudes
+// fun√ß√£o de calculo de quantos km tem entre duas latitudes e longitudes
 static double haversine(double lat1, double lon1, 
 						double lat2, double lon2) 
 	{ 
@@ -43,7 +44,7 @@ static double haversine(double lat1, double lon1,
 		lat1 = (lat1) * M_PI / 180.0; 
 		lat2 = (lat2) * M_PI / 180.0; 
 
-		// aplicar fÛrmula
+		// aplicar f√≥rmula
 		double a = pow(sin(dLat / 2), 2) + 
 				pow(sin(dLon / 2), 2) * 
 				cos(lat1) * cos(lat2); 
@@ -86,11 +87,19 @@ int main()
 
 {
 	
-// ---------------------------------------------- INICIALIZA«√O DAS VARI¡VEIS ----------------------
-//variavel de seleÁ„o do menu
+// ---------------------------------------------- INICIALIZA√á√ÉO DAS VARI√ÅVEIS ----------------------
+//variavel de sele√ß√£o do menu
 char selection;
 //pontos a serem inseridos
 int p;
+//Vetor distancias
+vector< vector<float> > distancias;
+//Indice minimo
+int min, v_min, v_atual, elem;
+// Vetor Trajeto
+std::vector<int> trajeto;
+//Vetor posicao
+std::vector<int> posicao;
 // vetor pontos
 std::vector<int> pontos;
 //para conversao
@@ -101,13 +110,13 @@ std::vector<double> latitudes;
 std::vector<double> longitudes;
 vector<double>::iterator it;
 vector<double>::iterator its;
-//for de manipulaÁ„o dos vetores
+//for de manipula√ß√£o dos vetores
 int j;
 int k;
 int pos;
 int poss;
 int rota;
-//variaveis de latitude e longitude - tempor·rio mas correspondem aos pontos reais
+//variaveis de latitude e longitude - tempor√°rio mas correspondem aos pontos reais
 double lat1= -15.770963,long1= -47.888502,lat2= -15.720775,long2= -47.883350,lat3= -15.744001,long3= -47.850570,lat4= -15.733281,long4= -47.864906,lat5= -15.716918,long5= -47.880843;
 double lat6= -15.752528,long6= -47.928705,lat7= -15.755850,long7= -47.884122,lat8= -15.741696,long8= -47.892770,lat9= -15.716746,long9= -47.883326,lat10= -15.759711,long10= -47.880712;
 // coloca latitudes e longitudes em vetores lats e longs
@@ -127,7 +136,7 @@ lat2s << lat2;
 long2s << long2;
 lat3s << lat3;
 long3s << long3;
-//talvez usar um for ou entao uma funÁ„o
+//talvez usar um for ou entao uma fun√ß√£o
 string s_lat1 = lat1s.str();
 string s_long1 = long1s.str();
 string s_lat2 = lat2s.str();
@@ -136,7 +145,7 @@ string s_lat3 = lat3s.str();
 string s_long3 = long3s.str();
 // TODO COLOCAR OUTRO PONTOS
 
-// ---------------------------------------------- C¡LCULO DO TRAJETO ----------------------
+// ---------------------------------------------- C√ÅLCULO DO TRAJETO ----------------------
   do{
 cout<<"\n Menu";
 
@@ -152,7 +161,7 @@ cout<<"\n x - Sair";
 
 cout<<"\n Escolha a opcao: ";
 
-// le a seleÁ„o
+// le a sele√ß√£o
 cin>>selection;
 
 
@@ -161,22 +170,22 @@ switch(selection)
 {
 
 case 'A' :
-// lÍ pontos e escreve arquivo txt
+// l√™ pontos e escreve arquivo txt
 case 'a' :{cout<<"\n Adicionar Pontos\n";}
 //limpa os dados da tela
 system("cls");
 cout<<"\n Lista de pontos ";
 cout<<"\n========";
-cout<<"\n 1 - Dona de Casa, Via W TrÍs Norte - Asa Norte, BrasÌlia - DF, 70297-400 ";
-cout<<"\n 2 - BIG BOX - St. de HabitaÁıes Individuais Norte CA 1 bloco B loja 82 - Lago Norte, BrasÌlia - DF, 71503-501  ";
-cout<<"\n 3 - Big Box Estrada Parque PenÌnsula Norte lt 90 sl /N, BrasÌlia, DF, 71503-507";
-cout<<"\n 4 - BIG BOX - St. SHIN EPPN Canteiro Central lote 06 loja 18 - Lago Norte, BrasÌlia - DF, 71505-70";
-cout<<"\n 5 - Comercial Reis de Alimentos - St. de HabitaÁıes Individuais Norte CA 2 Bloco F Lt F, Loja 2 - Lago Norte, BrasÌlia - DF, 70634-400";
-cout<<"\n 6 - Leroy Merlin BrasÌlia Norte, SOFN - ¡rea Especial, BrasÌlia - DF, 70634-120";
-cout<<"\n 7 - Superquadra Norte 210 - Asa Norte, BrasÌlia - DF, 70862-000";
-cout<<"\n 8 - Superquadra Norte 115 - Asa Norte, BrasÌlia - DF, 70297-400";
-cout<<"\n 9 - AdministraÁ„o Regional de Lago Norte - St. de HabitaÁıes Individuais Norte CA 5 - Lago Norte, BrasÌlia - DF, 71503-507";
-cout<<"\n 10 - Evolua Mercado Sustent·vel - SHCN CLN 409 - Asa Norte, BrasÌlia - DF, 70297-400";
+cout<<"\n 1 - Dona de Casa, Via W Tr√™s Norte - Asa Norte, Bras√≠lia - DF, 70297-400 ";
+cout<<"\n 2 - BIG BOX - St. de Habita√ß√µes Individuais Norte CA 1 bloco B loja 82 - Lago Norte, Bras√≠lia - DF, 71503-501  ";
+cout<<"\n 3 - Big Box Estrada Parque Pen√≠nsula Norte lt 90 sl /N, Bras√≠lia, DF, 71503-507";
+cout<<"\n 4 - BIG BOX - St. SHIN EPPN Canteiro Central lote 06 loja 18 - Lago Norte, Bras√≠lia - DF, 71505-70";
+cout<<"\n 5 - Comercial Reis de Alimentos - St. de Habita√ß√µes Individuais Norte CA 2 Bloco F Lt F, Loja 2 - Lago Norte, Bras√≠lia - DF, 70634-400";
+cout<<"\n 6 - Leroy Merlin Bras√≠lia Norte, SOFN - √Årea Especial, Bras√≠lia - DF, 70634-120";
+cout<<"\n 7 - Superquadra Norte 210 - Asa Norte, Bras√≠lia - DF, 70862-000";
+cout<<"\n 8 - Superquadra Norte 115 - Asa Norte, Bras√≠lia - DF, 70297-400";
+cout<<"\n 9 - Administra√ß√£o Regional de Lago Norte - St. de Habita√ß√µes Individuais Norte CA 5 - Lago Norte, Bras√≠lia - DF, 71503-507";
+cout<<"\n 10 - Evolua Mercado Sustent√°vel - SHCN CLN 409 - Asa Norte, Bras√≠lia - DF, 70297-400";
 
 cout<<"\n========";
 
@@ -207,7 +216,7 @@ imprimevetor(pontos);
   for ( i=0; i<pontos.size(); i++) 
       longitudes.push_back(pontos[i]); 
 
-// imprime para mostrar que os dois s„o iguais       
+// imprime para mostrar que os dois s√£o iguais       
 //imprimevetordouble(latitudes);
 
 //imprimevetordouble(longitudes);
@@ -215,7 +224,7 @@ imprimevetor(pontos);
 //TODO encontrar o onde tem os valores 1,2,3... e substitituir o valor em lat1,lat2 ou long1,long2
 
 //latitudes
-//TODO COLOCAR NAS POSI«’ES CERTAS
+//TODO COLOCAR NAS POSI√á√ïES CERTAS
 
 // encontra valores 
 	for (j=0; j<=10 ; j++){
@@ -231,7 +240,7 @@ imprimevetor(pontos);
 	}
 	
 //
-cout << "comeÁando longitudes" << endl;
+cout << "come√ßando longitudes" << endl;
 //longitudes
 	for (k=0; k<=10 ; k++){
 
@@ -255,25 +264,48 @@ cout << longitudes.size() << endl;
 
 
 break;
-// ---------------------------------------------- C¡LCULO DO TRAJETO ----------------------
+// ---------------------------------------------- C√ÅLCULO DO TRAJETO ----------------------
 case 'B' :
 system("cls");
 case 'b' :{cout<<"Calcular Trajeto";}
 // TODO abrir arquivo com vetor latitudes e longitudes e calcular o trajeto ideal ex: 1-2-5-7
-
-//aplicar a funÁ„o haversine pra cada dupla
-cout << "\n" << haversine(lat1,long1,lat2,long2) << " km";
-
+for(i = 0; i < latitudes.size(); i++){
+	for(k = 0; k < latitudes.size(); k++){
+		distancias[i][k] = float(haversine(latitudes[i],longitudes[i],latitudes[k],longitudes[k]));
+	}
+}
+for (int i=0; i<=10; i++) posicao.push_back(i);
+posicao.resize(latitudes.size());
+trajeto.push_back(0); // Primeiro ponto √© sempre o da posi√ß√£o 0.
+for(int i = 0; i < latitudes.size(); i++){
+	elem = trajeto.back();
+	posicao.erase(std::remove(posicao.begin(), posicao.end(), elem), posicao.end());
+	for(int k = 0;  k < posicao.size(); k++){
+		if(k == 0){
+			v_min = distancias[elem][posicao[k]];
+			min = posicao[k];
+		}
+		else{
+			v_atual = distancias[elem][posicao[k]];
+			if(v_atual < v_min){
+				v_min = v_atual;
+				min = posicao[k];
+			}
+		}
+	}
+	trajeto.push_back(min);
+}
+trajeto.push_back(0);
 break;
 
-// ---------------------------------------------- EXIBI«√O ----------------------
+// ---------------------------------------------- EXIBI√á√ÉO ----------------------
 case 'C' :
 system("cls");
 case 'c' :{cout<<"\n Exibir Trajeto" << endl;}
 
-// le arquivo txt e exibe trajeto de acordo com os pontos mais prÛximos
+// le arquivo txt e exibe trajeto de acordo com os pontos mais pr√≥ximos
 
-// usa a funÁ„o waze com as latitudes e longitudes convertidas de int pra string
+// usa a fun√ß√£o waze com as latitudes e longitudes convertidas de int pra string
 waze(s_lat1,s_long1,s_lat2,s_long2);
 cout << endl;
 cout << "Pressione 1 para ver proxima rota: " << endl;
