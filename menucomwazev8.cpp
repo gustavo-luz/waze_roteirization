@@ -116,8 +116,8 @@ std::vector<double> lats(arraylatitudes, arraylatitudes+10);
 double arraylongitudes[] = {long1, long2, long3, long4, long5, long6, long7, long8, long9, long10};
 std::vector<double> longs(arraylongitudes, arraylongitudes+10);
 // RETIRAR imprime pra testar
-imprimevetordouble(lats);
-imprimevetordouble(longs);
+//imprimevetordouble(lats);
+//imprimevetordouble(longs);
 // convertidas pra string
 // TODO TERMINAR PARA AS 10 LATITUDES E LONGITUDES
 ostringstream lat1s,long1s,lat2s,long2s,lat3s,long3s;
@@ -134,7 +134,7 @@ string s_lat2 = lat2s.str();
 string s_long2 = long2s.str();
 string s_lat3 = lat3s.str();
 string s_long3 = long3s.str();
-
+// TODO COLOCAR OUTRO PONTOS
 
 // ---------------------------------------------- CÁLCULO DO TRAJETO ----------------------
   do{
@@ -208,9 +208,9 @@ imprimevetor(pontos);
       longitudes.push_back(pontos[i]); 
 
 // imprime para mostrar que os dois são iguais       
-imprimevetordouble(latitudes);
+//imprimevetordouble(latitudes);
 
-imprimevetordouble(longitudes);
+//imprimevetordouble(longitudes);
 
 //TODO encontrar o onde tem os valores 1,2,3... e substitituir o valor em lat1,lat2 ou long1,long2
 
@@ -230,7 +230,7 @@ imprimevetordouble(longitudes);
 }
 	}
 	
-/* POR ALGUM MOTIVO COM LONGITUDES AINDA NÃO ESTÁ FUNCIONANDO
+//
 cout << "começando longitudes" << endl;
 //longitudes
 	for (k=0; k<10 ; k++){
@@ -240,28 +240,18 @@ cout << "começando longitudes" << endl;
 	{
 	cout<<*its<<" esta na posicao "<<(its- longitudes.begin()) << endl;
 	poss = its- longitudes.begin();
-	latitudes[poss]=longs[k];
+	longitudes[poss]=longs[k];
 	imprimevetordouble(longitudes);
 }
 	}
-*/
+cout << latitudes.size() << endl;
+cout << longitudes.size() << endl;
 // ver https://learntechway.com/find-in-c-find-an-element-in-a-vector/
 // e https://stackoverflow.com/questions/9904976/how-to-replace-specific-values-in-a-vector-in-c
 
 
 //colocar o primeiro e o ultimo ponto sendo da origem
 
-//cria um arquivo txt e coloca nele o vetor latitudes e longitudes
-//ofstream myfile;
- // myfile.open("pontos.txt");
- // if (myfile.is_open()){
-  //
-   // myfile << pontos;
-
- //   myfile.close();
- // }
-  //else
-  //  cout << "Nao foi possivel abrir o arquivo";
 
 
 break;
