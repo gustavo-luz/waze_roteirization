@@ -218,14 +218,14 @@ imprimevetor(pontos);
 //TODO COLOCAR NAS POSIÇÕES CERTAS
 
 // encontra valores 
-	for (j=0; j<10 ; j++){
+	for (j=0; j<=10 ; j++){
 
 	it=find(latitudes.begin(),latitudes.end(),j);
 	if(it != latitudes.end())
 	{
 	cout<<*it<<" esta na posicao "<<(it- latitudes.begin()) << endl;
 	pos = it- latitudes.begin();
-	latitudes[pos]=lats[j];
+	latitudes[pos]=lats[j-1];
 	imprimevetordouble(latitudes);
 }
 	}
@@ -233,14 +233,14 @@ imprimevetor(pontos);
 //
 cout << "começando longitudes" << endl;
 //longitudes
-	for (k=0; k<10 ; k++){
+	for (k=0; k<=10 ; k++){
 
 	its=find(longitudes.begin(),longitudes.end(),k);
 	if(its != longitudes.end())
 	{
 	cout<<*its<<" esta na posicao "<<(its- longitudes.begin()) << endl;
 	poss = its- longitudes.begin();
-	longitudes[poss]=longs[k];
+	longitudes[poss]=longs[k-1];
 	imprimevetordouble(longitudes);
 }
 	}
