@@ -1,6 +1,6 @@
-// ------C”DIGO PARA C¡LCULO DE ROTA OTIMIZADA DE CAMINH’ES QUE REALIZAM A COLETA SELETIVA ----------------------
-// --------12/2020 - PROJETO COMPUTACIONAL - COMPUTA«√O PARA ENGENHARIA ------------------------------------
-// -----------UNIVERSIDADE DE BRASÕLIA - ENGENHARIA EL…TRICA --------------------------------------------------
+// ------C√ìDIGO PARA C√ÅLCULO DE ROTA OTIMIZADA DE CAMINH√ïES QUE REALIZAM A COLETA SELETIVA ----------------------
+// --------12/2020 - PROJETO COMPUTACIONAL - COMPUTA√á√ÉO PARA ENGENHARIA ------------------------------------
+// -----------UNIVERSIDADE DE BRAS√çLIA - ENGENHARIA EL√âTRICA --------------------------------------------------
 // ---------------- GUSTAVO PESSOA, IVAN CUNHA --------------------------------------------------
 
 // ---------------------------------------------- BIBLIOTECAS ----------------------
@@ -21,17 +21,17 @@
 #include <fstream>
 //para o calculo da distancia entre os pontos
 #include <cmath> 
-//precis„o casas decimais
+//precis√£o casas decimais
 #include <iomanip>
 using namespace std;
 
 
 
-// ---------------------------------------------- FUN«’ES ----------------------
+// ---------------------------------------------- FUN√á√ïES ----------------------
 
 
 
-// funÁ„o de calculo de quantos km tem entre duas latitudes e longitudes
+// fun√ß√£o de calculo de quantos km tem entre duas latitudes e longitudes
 static double haversine(double lat1, double lon1, 
 						double lat2, double lon2) 
 	{ 
@@ -45,7 +45,7 @@ static double haversine(double lat1, double lon1,
 		lat1 = (lat1) * M_PI / 180.0; 
 		lat2 = (lat2) * M_PI / 180.0; 
 
-		// aplicar fÛrmula
+		// aplicar f√≥rmula
 		double a = pow(sin(dLat / 2), 2) + 
 				pow(sin(dLon / 2), 2) * 
 				cos(lat1) * cos(lat2); 
@@ -56,11 +56,10 @@ static double haversine(double lat1, double lon1,
 
 // exibir no waze os pontos
 void waze(string lat_orig, string long_orig, string lat_dest, string long_dest) {
-	string base_waze;
+	string base_waze, final_waze;
 	base_waze = "https://www.waze.com/pt-BR/livemap/directions?dir_first=no&navigate=yes&utm_expid=.z332TkT-TdGeMi_l_4XUWA.0&utm_referrer=https%3A%2F%2Fwww.waze.com%2Flivemap%2Fdirections%3Fnavigate%3Dyes%26latlng%3D40.758895%252C-73.985131%26zoom%3D17&to=ll.";
-	base_waze = base_waze + lat_dest + "%2C" + long_dest + "&from=ll." + lat_orig + "%2C" + long_orig;
-	ShellExecuteA(NULL, "open", base_waze.c_str(), NULL, NULL, SW_SHOWNORMAL);
-	cout << base_waze;
+	final_waze = base_waze + lat_dest + "%2C" + long_dest + "&from=ll." + lat_orig + "%2C" + long_orig;
+	ShellExecuteA(NULL, "open", final_waze.c_str(), NULL, NULL, SW_SHOWNORMAL);
 }
 
 // imprimir um vetor int
@@ -88,13 +87,14 @@ int main()
 
 {
 	
-// ---------------------------------------------- INICIALIZA«√O DAS VARI¡VEIS ----------------------
-//variavel de seleÁ„o do menu
+// ---------------------------------------------- INICIALIZA√á√ÉO DAS VARI√ÅVEIS ----------------------
+//variavel de sele√ß√£o do menu
 int selection;
 //pontos a serem inseridos
 int p;
+int size;
 //Vetor distancias
-vector< vector<float> > distancias;
+vector< vector<double> > distancias;
 //Indice minimo
 int min, v_min, v_atual, elem;
 // Vetor Trajeto
@@ -113,7 +113,7 @@ std::vector<double> longitudes;
 vector<double>::iterator it;
 vector<int>::iterator its;
 
-//for de manipulaÁ„o dos vetores
+//for de manipula√ß√£o dos vetores
 int j;
 int k;
 int pos;
@@ -124,7 +124,7 @@ int rota;
 //int m;
 //int o;
 
-//variaveis de latitude e longitude - tempor·rio mas correspondem aos pontos reais
+//variaveis de latitude e longitude - tempor√°rio mas correspondem aos pontos reais
 double lat1= -15.770963,long1= -47.888502,lat2= -15.720775,long2= -47.883350,lat3= -15.744001,long3= -47.850570,lat4= -15.733281,long4= -47.864906,lat5= -15.716918,long5= -47.880843;
 double lat6= -15.752528,long6= -47.928705,lat7= -15.755850,long7= -47.884122,lat8= -15.741696,long8= -47.892770,lat9= -15.716746,long9= -47.883326,lat10= -15.759711,long10= -47.880712;
 // coloca latitudes e longitudes em vetores lats e longs
@@ -136,55 +136,15 @@ std::vector<double> longs(arraylongitudes, arraylongitudes+10);
 //imprimevetordouble(lats);
 //imprimevetordouble(longs);
 // convertidas pra string PODE TIRAR ISSO TUDO TALVEZ - ANALISAR
-ostringstream lat1s,long1s,lat2s,long2s,lat3s,long3s,lat4s,long4s,lat5s,long5s,lat6s,long6s,lat7s,long7s,lat8s,long8s,lat9s,long9s,lat10s,long10s;
-lat1s << lat1;
-long1s << long1;
-lat2s << lat2;
-long2s << long2;
-lat3s << lat3;
-long3s << long3;
-lat3s << lat4;
-long3s << long4;
-lat3s << lat5;
-long3s << long5;
-lat3s << lat6;
-long3s << long6;
-lat3s << lat7;
-long3s << long7;
-lat3s << lat8;
-long3s << long8;
-lat3s << lat9;
-long3s << long9;
-lat3s << lat10;
-long3s << long10;
-//termina a convers„o
-string s_lat1 = lat1s.str();
-string s_long1 = long1s.str();
-string s_lat2 = lat2s.str();
-string s_long2 = long2s.str();
-string s_lat3 = lat3s.str();
-string s_long3 = long3s.str();
-string s_lat4 = lat4s.str();
-string s_long4 = long4s.str();
-string s_lat5 = lat5s.str();
-string s_long5 = long5s.str();
-string s_lat6 = lat6s.str();
-string s_long6 = long6s.str();
-string s_lat7 = lat7s.str();
-string s_long7 = long7s.str();
-string s_lat8 = lat8s.str();
-string s_long8 = long8s.str();
-string s_lat9 = lat9s.str();
-string s_long9 = long9s.str();
-string s_lat10 = lat10s.str();
-string s_long10 = long10s.str();
+
+
 // armazena em vetor
 //std::vector<string> numerostring{ '1', "2", "3","4","5","6","7","8","9","10" };
 //cria o array e dps armazena em vetor numerostring
 std::string arraystrings[] = {"1", "2", "3","4","5","6","7","8","9","10"};
 std::vector<string> numerostring(arraystrings, arraystrings+10);
 std::ostringstream vts;	
-// ---------------------------------------------- C¡LCULO DO TRAJETO ----------------------
+// ---------------------------------------------- C√ÅLCULO DO TRAJETO ----------------------
   do{
 cout<<"\n Menu";
 
@@ -200,29 +160,29 @@ cout<<"\n 4 - Sair";
 
 cout<<"\n Escolha a opcao: ";
 
-// le a seleÁ„o
+// le a sele√ß√£o
 cin>>selection;
 
 
 if (selection == 1)
 {
 
-// lÍ pontos e escreve arquivo txt
+// l√™ pontos e escreve arquivo txt
 cout<<"\n Adicionar Pontos\n";
 //limpa os dados da tela
 system("cls");
 cout<<"\n Lista de pontos ";
 cout<<"\n========";
-cout<<"\n 1 - Dona de Casa, Via W TrÍs Norte - Asa Norte, BrasÌlia - DF, 70297-400 ";
-cout<<"\n 2 - BIG BOX - St. de HabitaÁıes Individuais Norte CA 1 bloco B loja 82 - Lago Norte, BrasÌlia - DF, 71503-501  ";
-cout<<"\n 3 - Big Box Estrada Parque PenÌnsula Norte lt 90 sl /N, BrasÌlia, DF, 71503-507";
-cout<<"\n 4 - BIG BOX - St. SHIN EPPN Canteiro Central lote 06 loja 18 - Lago Norte, BrasÌlia - DF, 71505-70";
-cout<<"\n 5 - Comercial Reis de Alimentos - St. de HabitaÁıes Individuais Norte CA 2 Bloco F Lt F, Loja 2 - Lago Norte, BrasÌlia - DF, 70634-400";
-cout<<"\n 6 - Leroy Merlin BrasÌlia Norte, SOFN - ¡rea Especial, BrasÌlia - DF, 70634-120";
-cout<<"\n 7 - Superquadra Norte 210 - Asa Norte, BrasÌlia - DF, 70862-000";
-cout<<"\n 8 - Superquadra Norte 115 - Asa Norte, BrasÌlia - DF, 70297-400";
-cout<<"\n 9 - AdministraÁ„o Regional de Lago Norte - St. de HabitaÁıes Individuais Norte CA 5 - Lago Norte, BrasÌlia - DF, 71503-507";
-cout<<"\n 10 - Evolua Mercado Sustent·vel - SHCN CLN 409 - Asa Norte, BrasÌlia - DF, 70297-400";
+cout<<"\n 1 - Dona de Casa, Via W Tr√™s Norte - Asa Norte, Bras√≠lia - DF, 70297-400 ";
+cout<<"\n 2 - BIG BOX - St. de Habita√ß√µes Individuais Norte CA 1 bloco B loja 82 - Lago Norte, Bras√≠lia - DF, 71503-501  ";
+cout<<"\n 3 - Big Box Estrada Parque Pen√≠nsula Norte lt 90 sl /N, Bras√≠lia, DF, 71503-507";
+cout<<"\n 4 - BIG BOX - St. SHIN EPPN Canteiro Central lote 06 loja 18 - Lago Norte, Bras√≠lia - DF, 71505-70";
+cout<<"\n 5 - Comercial Reis de Alimentos - St. de Habita√ß√µes Individuais Norte CA 2 Bloco F Lt F, Loja 2 - Lago Norte, Bras√≠lia - DF, 70634-400";
+cout<<"\n 6 - Leroy Merlin Bras√≠lia Norte, SOFN - √Årea Especial, Bras√≠lia - DF, 70634-120";
+cout<<"\n 7 - Superquadra Norte 210 - Asa Norte, Bras√≠lia - DF, 70862-000";
+cout<<"\n 8 - Superquadra Norte 115 - Asa Norte, Bras√≠lia - DF, 70297-400";
+cout<<"\n 9 - Administra√ß√£o Regional de Lago Norte - St. de Habita√ß√µes Individuais Norte CA 5 - Lago Norte, Bras√≠lia - DF, 71503-507";
+cout<<"\n 10 - Evolua Mercado Sustent√°vel - SHCN CLN 409 - Asa Norte, Bras√≠lia - DF, 70297-400";
 
 cout<<"\n========";
 
@@ -238,6 +198,7 @@ system("cls");
 
 //tira o 0 do vetor - ultimo elemento inserido
 pontos.pop_back();
+
 
 // fala quantos pontos foram colocados
   std::cout << "foram inseridos " << int(pontos.size()) << " pontos.\n";
@@ -284,7 +245,7 @@ std::copy(pontos.begin(), pontos.end(), output_iterator);
   for ( i=0; i<pontos.size(); i++) 
       longitudes.push_back(pontos[i]); 
 
-// imprime para mostrar que os dois s„o iguais       
+// imprime para mostrar que os dois s√£o iguais       
 //imprimevetordouble(latitudes);
 
 //imprimevetordouble(longitudes);
@@ -292,7 +253,7 @@ std::copy(pontos.begin(), pontos.end(), output_iterator);
 //TODO encontrar o onde tem os valores 1,2,3... e substitituir o valor em lat1,lat2 ou long1,long2
 
 //latitudes
-//TODO COLOCAR NAS POSI«’ES CERTAS
+//TODO COLOCAR NAS POSI√á√ïES CERTAS
 
 // encontra valores e substitui
 	for (j=0; j<=10 ; j++){
@@ -308,7 +269,7 @@ std::copy(pontos.begin(), pontos.end(), output_iterator);
 	}
 	
 //
-cout << "comeÁando longitudes" << endl;
+cout << "come√ßando longitudes" << endl;
 //longitudes
 	for (k=0; k<=10 ; k++){
 
@@ -321,68 +282,37 @@ cout << "comeÁando longitudes" << endl;
 	imprimevetordouble(longitudes);
 }
 	}
-cout << latitudes.size() << endl;
-cout << longitudes.size() << endl;
+size = latitudes.size();
+double dist[size][size];
 
-
-cout << "tentando parte do ivan" << endl;
 // ver https://learntechway.com/find-in-c-find-an-element-in-a-vector/
 // e https://stackoverflow.com/questions/9904976/how-to-replace-specific-values-in-a-vector-in-c
 
 
-vector< vector<double> > res;
-res.push_back(latitudes);
-res.push_back(longitudes);
-for( i = 0; i < res.size(); i++)
-    {
-
-        for( j = 0; j < res[0].size(); j++)
-        {
-            cout << res[i][j] << ",";
-        }
-
-        cout << endl;
-    }
-
-cout << "tentando parte do ivan" << endl;
-
-cout << haversine(latitudes[1],longitudes[1],latitudes[2],longitudes[2]) << endl;
-cout << "tentando parte do ivan" << endl;
-
-for(i = 0; i < latitudes.size(); i++){
-	for(k = 0; k < latitudes.size(); k++){
-		distancias[i][k] = double(haversine(latitudes[i],longitudes[i],latitudes[k],longitudes[k]));
+for(i = 0; i < size; i++){
+	for(k = 0; k < size; k++){
+		dist[i][k] = haversine(latitudes[i],longitudes[i],latitudes[k],longitudes[k]);
 	}
 }
 
-
-
-cout << "tentando parte do ivan" << endl;
-
-for(i = 0; i < latitudes.size(); i++){
-	for(k = 0; k < latitudes.size(); k++){
-		distancias[i][k] = float(haversine(latitudes[i],longitudes[i],latitudes[k],longitudes[k]));
-	}
-}
-
-
-cout << "tentando parte do ivan" << endl;
 for ( i=0; i<=10; i++) posicao.push_back(i);
-posicao.resize(latitudes.size());
-cout << "tentando parte do ivan" << endl;
-trajeto.push_back(0); // Primeiro ponto È sempre o da posiÁ„o 0.
-imprimevetor(trajeto);
-cout << "chegou aqui" << endl;
-for( i = 0; i < latitudes.size(); i++){
+
+posicao.resize(size);
+
+trajeto.push_back(0); // Primeiro ponto √© sempre o da posi√ß√£o 0.
+
+cout << "Trajeto" << endl;
+
+for( i = 0; i < size; i++){
 	elem = trajeto.back();
 	posicao.erase(std::remove(posicao.begin(), posicao.end(), elem), posicao.end());
-	for( k = 0;  k < posicao.size(); k++){
+	for(k = 0;  k < posicao.size(); k++){
 		if(k == 0){
-			v_min = distancias[elem][posicao[k]];
+			v_min = dist[elem][posicao[k]];
 			min = posicao[k];
 		}
 		else{
-			v_atual = distancias[elem][posicao[k]];
+			v_atual = dist[elem][posicao[k]];
 			if(v_atual < v_min){
 				v_min = v_atual;
 				min = posicao[k];
@@ -391,15 +321,11 @@ for( i = 0; i < latitudes.size(); i++){
 	}
 	trajeto.push_back(min);
 }
+trajeto.pop_back();
 trajeto.push_back(0);
-cout << "chegou aqui 2" << endl;
-cout << trajeto[1] << endl;
-cout << "chegou aqui 3" << endl;
-imprimevetor(trajeto);
-cout << "chegou aqui 4" << endl;
-
-
-
+for(i = 0; i < trajeto.size(); i++){
+	cout <<"Ponto " << i << ": " <<pontos[trajeto[i]] << endl;
+}
 //colocar o primeiro e o ultimo ponto sendo da origem
 
 }
@@ -407,67 +333,43 @@ cout << "chegou aqui 4" << endl;
 else if (selection == 2)
 {
 
-// ---------------------------------------------- C¡LCULO DO TRAJETO ----------------------
+// ---------------------------------------------- C√ÅLCULO DO TRAJETO ----------------------
 
 //system("cls");
 cout<< "Calcular Trajeto" <<endl;
-// TODO abrir arquivo com vetor latitudes e longitudes e calcular o trajeto ideal ex: 1-2-5-7
-for(i = 0; i < latitudes.size(); i++){
-	for(k = 0; k < latitudes.size(); k++){
-		distancias[i][k] = float(haversine(latitudes[i],longitudes[i],latitudes[k],longitudes[k]));
-	}
-}
+
+//
 
 
-for ( i=0; i<=10; i++) posicao.push_back(i);
-posicao.resize(latitudes.size());
-trajeto.push_back(0); // Primeiro ponto È sempre o da posiÁ„o 0.
-imprimevetor(trajeto);
-cout << "chegou aqui" << endl;
-for( i = 0; i < latitudes.size(); i++){
-	elem = trajeto.back();
-	posicao.erase(std::remove(posicao.begin(), posicao.end(), elem), posicao.end());
-	for( k = 0;  k < posicao.size(); k++){
-		if(k == 0){
-			v_min = distancias[elem][posicao[k]];
-			min = posicao[k];
-		}
-		else{
-			v_atual = distancias[elem][posicao[k]];
-			if(v_atual < v_min){
-				v_min = v_atual;
-				min = posicao[k];
-			}
-		}
-	}
-	trajeto.push_back(min);
-}
-trajeto.push_back(0);
-cout << "chegou aqui 2" << endl;
-cout << trajeto[1] << endl;
-cout << "chegou aqui 3" << endl;
-imprimevetor(trajeto);
-cout << "chegou aqui 4" << endl;
+
 
 }
 else if (selection == 3)
 {
-// ---------------------------------------------- EXIBI«√O ----------------------
+// ---------------------------------------------- EXIBI√á√ÉO ----------------------
 
 system("cls");
 cout<<"\n Exibir Trajeto" << endl;
 
-// le arquivo txt e exibe trajeto de acordo com os pontos mais prÛximos
-
-// usa a funÁ„o waze com as latitudes e longitudes convertidas de int pra string
-waze(s_lat1,s_long1,s_lat2,s_long2);
-cout << endl;
-cout << "Pressione 1 para ver proxima rota: " << endl;
-cin >> rota;
-if (rota == 1);
-//Sleep(30);
-waze(s_lat2,s_long2,s_lat3,s_long3);
-
+for(i = 0; i < trajeto.size() - 1; i++){
+	ostringstream lat1s,long1s,lat2s,long2s;
+	lat1s << latitudes[trajeto[i]];
+	long1s << longitudes[trajeto[i]];
+	lat2s << latitudes[trajeto[i+1]];
+	long2s << longitudes[trajeto[i+1]];
+	
+	//termina a convers√£o
+	string s_lat1 = lat1s.str();
+	string s_long1 = long1s.str();
+	string s_lat2 = lat2s.str();
+	string s_long2 = long2s.str();
+	waze(s_lat1, s_long1 , s_lat2, s_long2);
+	rota = 0;
+	while(rota != 1){
+		cout << "Pressione 1 para ver a proxima rota: " <<  endl;
+		cin >> rota;
+	}
+}
 
 }
 else if (selection == 4)
@@ -476,6 +378,7 @@ else if (selection == 4)
 
 system("cls");
 cout<<"\n Sair";
+break;
 }
 else
 {
